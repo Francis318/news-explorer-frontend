@@ -1,0 +1,50 @@
+.header__nav {
+  display: flex;
+  gap: 57px;
+  align-items: center;
+}
+
+.header__button {
+  border: 1px solid #ffffff;
+  border-radius: 100px;
+  background-color: transparent;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  width: 176px;
+  height: 48px;
+  box-sizing: border-box;
+}
+.header__button:hover {
+  opacity: 0.6;
+}
+
+.header__button__home {
+  border: none;
+  padding: 0;
+  width: 44px;
+  height: 80px;
+  border-radius: 0px;
+}
+
+.header__button_active {
+  border-bottom: 3px solid #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+  .header__nav {
+    gap: 20px;
+  }
+
+  .header__button {
+    width: 152px;
+    height: 40px;
+  }
+
+  .header__button__home {
+    width: 64px;
+    height: 64px;
+  }
+}
