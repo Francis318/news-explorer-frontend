@@ -9,6 +9,7 @@ import NewsCardList from "./components/NewsCardList/NewsCardList";
 import PopupWithForm from "./components/PopupWithForm/PopupWithForm";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
+import InfoTooltip from "./components/InfoTooltip/InfoTooltip";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
 
   function handleSearch(e) {
     e.preventDefault();
@@ -71,6 +73,7 @@ function App() {
 
   function handleLoginClick() {
     setIsLoginPopupOpen(true);
+    setIsInfoTooltipOpen(false);
     if (isRegisterPopupOpen) {
       setIsRegisterPopupOpen(false);
     }
@@ -107,6 +110,11 @@ function App() {
         isOpen={isRegisterPopupOpen}
         onClose={() => setIsRegisterPopupOpen(false)}
         onRedirectClick={handleLoginClick}
+      />
+      <InfoTooltip
+        isOpen={isInfoTooltipOpen}
+        onClose={() => setIsInfoTooltipOpen(false)}
+        onLoginClick={handleLoginClick}
       />
     </div>
   );
