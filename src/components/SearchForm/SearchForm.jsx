@@ -1,6 +1,6 @@
 import "./SearchForm.css";
 
-function SearchForm() {
+function SearchForm({ onSearch }) {
   return (
     <section className="search-form">
       <h1 className="search-form__title">¿Qué está pasando en el mundo?</h1>
@@ -10,7 +10,7 @@ function SearchForm() {
         cuenta personal.
       </p>
 
-      <form className="search-form__form">
+      <form className="search-form__form" onSubmit={onSearch}>
         <input
           type="text"
           placeholder="Introduce un tema"

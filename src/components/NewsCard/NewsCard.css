@@ -1,16 +1,20 @@
 .news-card {
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 20px;
   overflow: hidden;
-  background-color: #f5f6f7;
   max-width: 400px;
-  height: 576px;
-  gap: 16px;
+  height: 100%;
   position: relative;
 }
 
+.news-card:hover {
+  transform: translateY(-4px);
+}
+
 .news-card__image {
-  max-width: 400px;
+  width: 100%;
   height: 272px;
   object-fit: cover;
 }
@@ -19,16 +23,55 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
+  flex-grow: 1;
+}
+
+.news-card__button-container {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.news-card__tooltip {
+  background: #ffffff;
+  box-shadow: 0px 10px 22px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  color: #000000;
+  opacity: 0; /* Oculto por defecto */
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.news-card__button-container:hover .news-card__tooltip {
+  opacity: 1;
+  visibility: visible;
 }
 
 .news-card__save-button {
-  position: absolute;
   top: 24px;
   right: 24px;
   width: 40px;
   height: 40px;
+  background: #f5f6f7;
+  border-radius: 8px;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+}
+
+.news-card__save-button:hover {
+  background: #ffffff;
+  border: 2px solid #1a1b22;
 }
 
 .news-card__date {
@@ -40,18 +83,20 @@
 }
 
 .news-card__title {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Roboto Slab", serif;
   font-weight: 400;
   font-size: 26px;
   line-height: 30px;
+  letter-spacing: 0px;
   color: #1a1b22;
 }
 
 .news-card__description {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
+  letter-spacing: 0px;
   color: #1a1b22;
 }
 
@@ -64,6 +109,6 @@
   color: #b6bcbf;
 }
 
-.news-card__author :hover {
+.news-card__author:hover {
   opacity: 0.6;
 }

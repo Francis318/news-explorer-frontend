@@ -4,10 +4,9 @@
   align-items: center;
   justify-content: center;
   background-color: #f5f6f7;
-  max-width: 1440px;
-  max-height: 374px;
-  margin: 0 auto;
-  padding: 20px;
+  padding: 80px 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .not-found__icon {

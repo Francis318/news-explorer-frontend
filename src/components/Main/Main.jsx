@@ -1,10 +1,10 @@
 import "./Main.css";
 import SearchForm from "../SearchForm/SearchForm";
 
-function Main() {
+function Main({ onSearch }) {
   return (
     <main className="main">
-      <SearchForm />
+      <SearchForm onSearch={onSearch} />
     </main>
   );
 }

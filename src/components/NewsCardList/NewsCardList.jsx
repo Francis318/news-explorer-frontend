@@ -1,5 +1,5 @@
 import NewsCard from "../NewsCard/NewsCard";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./NewsCardList.css";
 
 function NewsCardList({ cards }) {
@@ -7,6 +7,10 @@ function NewsCardList({ cards }) {
   const showMore = () => {
     setVisibleCards((prev) => prev + 3);
   };
+
+  useEffect(() => {
+    setVisibleCards(3);
+  }, [cards]);
 
   return (
     <section className="news-card-list">
@@ -23,9 +27,11 @@ function NewsCardList({ cards }) {
           />
         ))}
       </div>
-      <button className="news-card-list__show-more" onClick={showMore}>
-        Ver más
-      </button>
+      {visibleCards < cards.length && (
+        <button className="news-card-list__show-more" onClick={showMore}>
+          Ver más
+        </button>
+      )}
     </section>
   );
 }
