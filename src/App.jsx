@@ -8,6 +8,7 @@ import NotFound from "./components/NotFound/NotFound";
 import NewsCardList from "./components/NewsCardList/NewsCardList";
 import PopupWithForm from "./components/PopupWithForm/PopupWithForm";
 import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   const [isNotFound, setIsNotFound] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
+  const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
 
   function handleSearch(e) {
     e.preventDefault();
@@ -69,11 +71,24 @@ function App() {
 
   function handleLoginClick() {
     setIsLoginPopupOpen(true);
+    if (isRegisterPopupOpen) {
+      setIsRegisterPopupOpen(false);
+    }
+  }
+
+  function handleRegisterClick() {
+    setIsRegisterPopupOpen(true);
+    if (isLoginPopupOpen) {
+      setIsLoginPopupOpen(false);
+    }
   }
 
   return (
     <div>
-      <Header onLoginClick={handleLoginClick} />
+      <Header
+        onLoginClick={handleLoginClick}
+        onRegisterClick={handleRegisterClick}
+      />
       <Routes>
         <Route path="/" element={<Main onSearch={handleSearch} />} />
         <Route path="/saved-news" element={<h1>Saved News</h1>} />
@@ -86,6 +101,12 @@ function App() {
       <Login
         isOpen={isLoginPopupOpen}
         onClose={() => setIsLoginPopupOpen(false)}
+        onRedirectClick={handleRegisterClick}
+      />
+      <Register
+        isOpen={isRegisterPopupOpen}
+        onClose={() => setIsRegisterPopupOpen(false)}
+        onRedirectClick={handleLoginClick}
       />
     </div>
   );

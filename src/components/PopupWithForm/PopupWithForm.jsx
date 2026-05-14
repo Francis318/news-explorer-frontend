@@ -9,6 +9,8 @@ function PopupWithForm({
   buttonText,
   children,
   isValid,
+  onRedirectClick,
+  redirectText,
 }) {
   return (
     <div
@@ -35,9 +37,13 @@ function PopupWithForm({
           </button>
         </form>
         <p className="popup__redirect">
-          o
-          <a href="#" className="popup__redirect-link">
-            inscribirse
+          {"o "}
+          <a
+            href="#"
+            className="popup__redirect-link"
+            onClick={onRedirectClick}
+          >
+            {redirectText}
           </a>
         </p>
       </div>

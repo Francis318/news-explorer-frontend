@@ -1,17 +1,21 @@
 import React from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
-function Login({ isOpen, onClose, onRedirectClick }) {
+function Register({ isOpen, onClose, onRedirectClick }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [username, setUsername] = React.useState("");
   const [emailError, setEmailError] = React.useState("");
   const [passwordError, setPasswordError] = React.useState("");
+  const [usernameError, setUsernameError] = React.useState("");
 
   const isValid =
     email !== "" &&
     password !== "" &&
+    username !== "" &&
     emailError === "" &&
-    passwordError === "";
+    passwordError === "" &&
+    usernameError === "";
 
   function handleEmailChange(e) {
     const newValue = e.target.value;
@@ -36,17 +40,28 @@ function Login({ isOpen, onClose, onRedirectClick }) {
     }
   }
 
+  function handleUsernameChange(e) {
+    const newValue = e.target.value;
+    setUsername(newValue);
+
+    if (newValue.length < 2) {
+      setUsernameError("El nombre de usuario debe tener al menos 2 caracteres");
+    } else {
+      setUsernameError("");
+    }
+  }
+
   return (
     <div>
       <PopupWithForm
         isOpen={isOpen}
         onClose={onClose}
-        title="Iniciar sesión"
-        name="login"
-        buttonText="Iniciar sesión"
+        title="Inscribirse"
+        name="register"
+        buttonText="Inscribirse"
         isValid={isValid}
+        redirectText="iniciar sesión"
         onRedirectClick={onRedirectClick}
-        redirectText="inscribirse"
       >
         <label className="popup__label">
           Correo electrónico
@@ -74,9 +89,22 @@ function Login({ isOpen, onClose, onRedirectClick }) {
           />
           <span className="popup__error">{passwordError}</span>
         </label>
+        <label className="popup__label">
+          Nombre de usuario
+          <input
+            type="text"
+            name="username"
+            className="popup__input"
+            placeholder="Nombre de usuario"
+            required
+            onChange={handleUsernameChange}
+            value={username}
+          />
+          <span className="popup__error">{usernameError}</span>
+        </label>
       </PopupWithForm>
     </div>
   );
 }
 
-export default Login;
+export default Register;
