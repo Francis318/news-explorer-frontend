@@ -6,12 +6,15 @@ import Footer from "./components/Footer/Footer";
 import Preloader from "./components/Preloader/Preloader";
 import NotFound from "./components/NotFound/NotFound";
 import NewsCardList from "./components/NewsCardList/NewsCardList";
+import PopupWithForm from "./components/PopupWithForm/PopupWithForm";
+import Login from "./components/Login/Login";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isNotFound, setIsNotFound] = React.useState(false);
   const [cards, setCards] = React.useState([]);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
 
   function handleSearch(e) {
     e.preventDefault();
@@ -64,9 +67,13 @@ function App() {
     }, 2000);
   }
 
+  function handleLoginClick() {
+    setIsLoginPopupOpen(true);
+  }
+
   return (
     <div>
-      <Header />
+      <Header onLoginClick={handleLoginClick} />
       <Routes>
         <Route path="/" element={<Main onSearch={handleSearch} />} />
         <Route path="/saved-news" element={<h1>Saved News</h1>} />
@@ -76,6 +83,10 @@ function App() {
       {cards.length > 0 && <NewsCardList cards={cards} />}
       <About />
       <Footer />
+      <Login
+        isOpen={isLoginPopupOpen}
+        onClose={() => setIsLoginPopupOpen(false)}
+      />
     </div>
   );
 }
