@@ -1,11 +1,15 @@
 import "./Header.css";
 import Navigation from "../Navigation/Navigation";
 
-function Header({ onLoginClick }) {
+function Header({ isLoggedIn, currentUser, onLoginClick }) {
   return (
     <header className="header">
       <h1 className="header__title">News Explorer</h1>
-      <Navigation onLoginClick={onLoginClick} />
+      <Navigation
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
+        onLoginClick={onLoginClick}
+      />
     </header>
   );
 }

@@ -10,26 +10,61 @@
   background-color: transparent;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  vertical-align: middle;
   color: #ffffff;
-  width: 176px;
   height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
+  cursor: pointer;
 }
+
+.header__button_login {
+  width: 176px;
+}
+
+.header__button_user {
+  padding: 0 20px;
+  gap: 15px;
+}
+
 .header__button:hover {
   opacity: 0.6;
 }
 
-.header__button__home {
-  border: none;
-  padding: 0;
-  width: 44px;
-  height: 80px;
-  border-radius: 0px;
+.header__logout-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .header__button_active {
+  border-bottom: 3px solid #ffffff;
+}
+
+.header__link {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #ffffff;
+  text-decoration: none;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 3px solid transparent;
+  transition: opacity 0.3s ease;
+}
+
+.header__link:hover {
+  opacity: 0.7;
+}
+
+.header__link_active {
   border-bottom: 3px solid #ffffff;
 }
 
@@ -38,13 +73,14 @@
     gap: 20px;
   }
 
-  .header__button {
-    width: 152px;
-    height: 40px;
+  .header__link {
+    height: 64px;
+    font-size: 16px;
   }
 
-  .header__button__home {
-    width: 64px;
-    height: 64px;
+  .header__button {
+    height: 40px;
+    font-size: 16px;
+    padding: 0 15px;
   }
 }

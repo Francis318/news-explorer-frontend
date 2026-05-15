@@ -19,6 +19,8 @@ function App() {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({ name: "Elise" });
 
   function handleSearch(e) {
     e.preventDefault();
@@ -91,6 +93,8 @@ function App() {
       <Header
         onLoginClick={handleLoginClick}
         onRegisterClick={handleRegisterClick}
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
       />
       <Routes>
         <Route path="/" element={<Main onSearch={handleSearch} />} />
