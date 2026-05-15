@@ -10,6 +10,7 @@ import PopupWithForm from "./components/PopupWithForm/PopupWithForm";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import InfoTooltip from "./components/InfoTooltip/InfoTooltip";
+import SavedNewsHeader from "./components/SavedNewsHeader/SavedNewsHeader";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -21,6 +22,8 @@ function App() {
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({ name: "Elise" });
+  const [savedNews, setSavedNews] = React.useState([]);
+  const [isSavedNews, setIsSavedNews] = React.useState(false);
 
   function handleSearch(e) {
     e.preventDefault();
@@ -88,6 +91,11 @@ function App() {
     }
   }
 
+  function handleLoginSubmit() {
+    setIsLoggedIn(true);
+    setIsLoginPopupOpen(false);
+  }
+
   return (
     <div>
       <Header
@@ -97,18 +105,35 @@ function App() {
         currentUser={currentUser}
       />
       <Routes>
-        <Route path="/" element={<Main onSearch={handleSearch} />} />
-        <Route path="/saved-news" element={<h1>Saved News</h1>} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Main onSearch={handleSearch} />
+              {isLoading && <Preloader />}
+              {isNotFound && <NotFound />}
+              {cards.length > 0 && <NewsCardList cards={cards} />}
+              <About />
+            </>
+          }
+        />
+
+        <Route
+          path="/saved-news"
+          element={
+            <SavedNewsHeader
+              currentUser={currentUser}
+              savedArticles={savedNews}
+            />
+          }
+        />
       </Routes>
-      {isLoading && <Preloader />}
-      {isNotFound && <NotFound />}
-      {cards.length > 0 && <NewsCardList cards={cards} />}
-      <About />
       <Footer />
       <Login
         isOpen={isLoginPopupOpen}
         onClose={() => setIsLoginPopupOpen(false)}
         onRedirectClick={handleRegisterClick}
+        onLogin={handleLoginSubmit}
       />
       <Register
         isOpen={isRegisterPopupOpen}

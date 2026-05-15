@@ -11,6 +11,7 @@ function PopupWithForm({
   isValid,
   onRedirectClick,
   redirectText,
+  onSubmit,
 }) {
   return (
     <div
@@ -29,7 +30,7 @@ function PopupWithForm({
           className="popup__form"
           name={name}
           noValidate
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={onSubmit}
         >
           {children}
           <button type="submit" className="popup__submit" disabled={!isValid}>

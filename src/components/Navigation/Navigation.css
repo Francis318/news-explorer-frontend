@@ -68,6 +68,19 @@
   border-bottom: 3px solid #ffffff;
 }
 
+.header__button_light {
+  border: 1px solid #1a1b22;
+  color: #1a1b22;
+}
+
+.header__link_light {
+  color: #1a1b22;
+}
+
+.header__link_active_light {
+  border-bottom: 3px solid #1a1b22;
+}
+
 @media screen and (max-width: 768px) {
   .header__nav {
     gap: 20px;
