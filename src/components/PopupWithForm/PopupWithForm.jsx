@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./PopupWithForm.css";
 
 function PopupWithForm({
@@ -13,10 +13,33 @@ function PopupWithForm({
   redirectText,
   onSubmit,
 }) {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscClose);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [isOpen, onClose]);
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
     <div
       className={`popup ${isOpen ? "popup_opened" : ""}`}
       id={`popup-${name}`}
+      onMouseDown={handleOverlayClick}
     >
       <div className="popup__container">
         <button

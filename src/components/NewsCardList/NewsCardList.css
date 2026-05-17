@@ -41,3 +41,8 @@
   height: 64px;
   align-self: center;
 }
+
+.news-card-list_saved {
+  padding-top: 0;
+  align-items: normal;
+}

@@ -11,6 +11,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import InfoTooltip from "./components/InfoTooltip/InfoTooltip";
 import SavedNewsHeader from "./components/SavedNewsHeader/SavedNewsHeader";
+import SavedNews from "./components/SavedNews/SavedNews";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -22,8 +23,30 @@ function App() {
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({ name: "Elise" });
-  const [savedNews, setSavedNews] = React.useState([]);
   const [isSavedNews, setIsSavedNews] = React.useState(false);
+
+  const [savedNews, setSavedNews] = React.useState([
+    {
+      _id: "1",
+      keyword: "Naturaleza",
+      title: "Descubren nueva especie marina",
+      description:
+        "Biólogos encuentran un pez bioluminiscente en las profundidades del océano.",
+      date: "11 de mayo de 2026",
+      source: "National Sci",
+      url: "https://images.unsplash.com/photo-1582967788606-a171c1080cb0?q=80&w=400&auto=format&fit=crop",
+    },
+    {
+      _id: "2",
+      keyword: "Yellowstone",
+      title: "El renacimiento de la exploración espacial",
+      description:
+        "Nuevos cohetes prometen viajes más baratos a la órbita terrestre.",
+      date: "13 de mayo de 2026",
+      source: "Agencia Espacial",
+      url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400&auto=format&fit=crop",
+    },
+  ]);
 
   function handleSearch(e) {
     e.preventDefault();
@@ -121,10 +144,7 @@ function App() {
         <Route
           path="/saved-news"
           element={
-            <SavedNewsHeader
-              currentUser={currentUser}
-              savedArticles={savedNews}
-            />
+            <SavedNews currentUser={currentUser} savedArticles={savedNews} />
           }
         />
       </Routes>
