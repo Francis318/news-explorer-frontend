@@ -15,6 +15,7 @@ function NewsCard({
   isLoggedIn,
   keyword,
   isSavedNews,
+  link,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -58,13 +59,20 @@ function NewsCard({
           <img src={actionIcon} alt={isSavedNews ? "Eliminar" : "Guardar"} />
         </button>
       </div>
-      <img src={imageUrl} alt={title} className="news-card__image" />
-      <div className="news-card__content">
-        <p className="news-card__date">{date}</p>
-        <h3 className="news-card__title">{title}</h3>
-        <p className="news-card__description">{description}</p>
-        <p className="news-card__author">{author}</p>
-      </div>
+      <a
+        href={link}
+        target="_blank"
+        rel="noreferrer"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <img src={imageUrl} alt={title} className="news-card__image" />
+        <div className="news-card__content">
+          <p className="news-card__date">{date}</p>
+          <h3 className="news-card__title">{title}</h3>
+          <p className="news-card__description">{description}</p>
+          <p className="news-card__author">{author}</p>
+        </div>
+      </a>
     </div>
   );
 }

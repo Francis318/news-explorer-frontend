@@ -25,6 +25,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({ name: "Elise" });
   const [isSavedNews, setIsSavedNews] = React.useState(false);
+  const [apiError, setApiError] = React.useState(false);
 
   const [savedNews, setSavedNews] = React.useState([
     {
@@ -60,6 +61,7 @@ function App() {
   function handleSearch(keyword) {
     setIsLoading(true);
     setIsNotFound(false);
+    setApiError(false);
     setCards([]);
     newsApi
       .getNews(keyword)
@@ -94,7 +96,7 @@ function App() {
       })
       .catch((err) => {
         console.log("Error al buscar noticias:", err);
-        setIsNotFound(true);
+        setApiError(true);
       })
       .finally(() => {
         setIsLoading(false);
@@ -137,6 +139,20 @@ function App() {
               <Main onSearch={handleSearch} />
               {isLoading && <Preloader />}
               {isNotFound && <NotFound />}
+              {apiError && (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#1a1b22",
+                    marginTop: "20px",
+                    fontFamily: "Roboto, sans-serif",
+                  }}
+                >
+                  Lo sentimos, algo ha salido mal durante la solicitud. Es
+                  posible que haya un problema de conexión o que el servidor no
+                  funcione. Por favor, inténtalo más tarde.
+                </p>
+              )}
               {cards.length > 0 && <NewsCardList cards={cards} />}
               <About />
             </>

@@ -31,6 +31,7 @@ function NewsCardList({ cards, isSavedNews }) {
               date={item.date}
               keyword={item.keyword}
               isSavedNews={isSavedNews}
+              link={item.url}
             />
           ),
         )}
