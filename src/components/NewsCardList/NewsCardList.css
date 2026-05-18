@@ -40,6 +40,11 @@
   width: 288px;
   height: 64px;
   align-self: center;
+  cursor: pointer;
+}
+
+.news-card-list__show-more:hover {
+  background-color: #e8e8e8;
 }
 
 .news-card-list_saved {
