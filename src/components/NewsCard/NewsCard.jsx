@@ -63,7 +63,7 @@ function NewsCard({
         href={link}
         target="_blank"
         rel="noreferrer"
-        style={{ textDecoration: "none", color: "inherit" }}
+        className="news-card__link"
       >
         <img src={imageUrl} alt={title} className="news-card__image" />
         <div className="news-card__content">
