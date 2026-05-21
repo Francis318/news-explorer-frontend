@@ -7,7 +7,13 @@ import menuIcon from "../../images/menu.png";
 import menuIconLight from "../../images/menu-dark.png";
 import closeIcon from "../../images/close-icon.png";
 
-function Navigation({ isLoggedIn, currentUser, onLoginClick, isSavedNews }) {
+function Navigation({
+  isLoggedIn,
+  currentUser,
+  onLoginClick,
+  isSavedNews,
+  onLogOut,
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -59,6 +65,10 @@ function Navigation({ isLoggedIn, currentUser, onLoginClick, isSavedNews }) {
             </NavLink>
             <button
               className={`header__button header__button_user ${isSavedNews ? "header__button_light" : ""}`}
+              onClick={() => {
+                setIsMenuOpen(false);
+                onLogOut();
+              }}
             >
               {currentUser.name}
               <img

@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
-function Register({ isOpen, onClose, onRedirectClick }) {
+function Register({ isOpen, onClose, onRedirectClick, onRegister }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [username, setUsername] = React.useState("");
@@ -51,6 +51,11 @@ function Register({ isOpen, onClose, onRedirectClick }) {
     }
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    onRegister({ email, password, name: username });
+  }
+
   return (
     <div>
       <PopupWithForm
@@ -62,6 +67,7 @@ function Register({ isOpen, onClose, onRedirectClick }) {
         isValid={isValid}
         redirectText="iniciar sesión"
         onRedirectClick={onRedirectClick}
+        onSubmit={handleSubmit}
       >
         <label className="popup__label">
           Correo electrónico

@@ -38,7 +38,7 @@ function Login({ isOpen, onClose, onRedirectClick, onLogin }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onLogin();
+    onLogin({ email, password });
   }
 
   return (
