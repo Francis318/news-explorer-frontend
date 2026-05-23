@@ -8,6 +8,7 @@ import deleteDark from "../../images/delete-dark.png";
 
 function NewsCard({
   title,
+  _id,
   description,
   imageUrl,
   author,
@@ -16,15 +17,26 @@ function NewsCard({
   keyword,
   isSavedNews,
   link,
+  onSaveArticle,
+  onDeleteArticle,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   const handleSaveClick = () => {
     if (isSavedNews) {
-      console.log("Aquí borraremos el artículo después");
+      onDeleteArticle(_id);
     } else if (isLoggedIn) {
       setIsSaved(!isSaved);
+      onSaveArticle({
+        title: title,
+        text: description,
+        image: imageUrl,
+        source: author,
+        date: date,
+        keyword: keyword || "General",
+        link: link,
+      });
     }
   };
 
@@ -63,9 +75,15 @@ function NewsCard({
         href={link}
         target="_blank"
         rel="noreferrer"
-        style={{ textDecoration: "none", color: "inherit" }}
+        className="news-card__link"
       >
-        <img src={imageUrl} alt={title} className="news-card__image" />
+        <img
+          src={
+            imageUrl || "https://via.placeholder.com/400x200?text=Sin+Imagen"
+          }
+          alt={title}
+          className="news-card__image"
+        />
         <div className="news-card__content">
           <p className="news-card__date">{date}</p>
           <h3 className="news-card__title">{title}</h3>

@@ -2,7 +2,13 @@ import NewsCard from "../NewsCard/NewsCard";
 import React, { useState, useEffect } from "react";
 import "./NewsCardList.css";
 
-function NewsCardList({ cards, isSavedNews }) {
+function NewsCardList({
+  cards,
+  isSavedNews,
+  onSaveArticle,
+  onDeleteArticle,
+  isLoggedIn,
+}) {
   const [visibleCards, setVisibleCards] = useState(3);
   const showMore = () => {
     setVisibleCards((prev) => prev + 3);
@@ -24,14 +30,18 @@ function NewsCardList({ cards, isSavedNews }) {
           (item, index) => (
             <NewsCard
               key={index}
+              _id={item._id}
               title={item.title}
-              description={item.description}
-              imageUrl={item.imageUrl || item.url}
+              description={item.description || item.text}
+              imageUrl={item.imageUrl || item.image}
               author={item.author || item.source}
               date={item.date}
               keyword={item.keyword}
               isSavedNews={isSavedNews}
-              link={item.url}
+              link={item.url || item.link}
+              onSaveArticle={onSaveArticle}
+              onDeleteArticle={onDeleteArticle}
+              isLoggedIn={isLoggedIn}
             />
           ),
         )}

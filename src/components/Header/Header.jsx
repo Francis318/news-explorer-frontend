@@ -2,7 +2,7 @@ import "./Header.css";
 import Navigation from "../Navigation/Navigation";
 import { useLocation } from "react-router-dom";
 
-function Header({ isLoggedIn, currentUser, onLoginClick }) {
+function Header({ isLoggedIn, currentUser, onLoginClick, onLogOut }) {
   const location = useLocation();
   const isSavedNews = location.pathname === "/saved-news";
 
@@ -17,6 +17,7 @@ function Header({ isLoggedIn, currentUser, onLoginClick }) {
         isLoggedIn={isLoggedIn}
         currentUser={currentUser}
         onLoginClick={onLoginClick}
+        onLogOut={onLogOut}
         isSavedNews={isSavedNews}
       />
     </header>

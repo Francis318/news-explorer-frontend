@@ -64,3 +64,79 @@
 .search-form__button:hover {
   background-color: #347eff;
 }
+
+@media screen and (max-width: 768px) {
+  .search-form__title {
+    font-size: 36px;
+    line-height: 40px;
+    width: 452px;
+    height: auto;
+    margin-bottom: 16px;
+  }
+
+  .search-form__text {
+    font-size: 18px;
+    line-height: 24px;
+    width: 452px;
+    height: auto;
+    margin-bottom: 48px;
+  }
+  .search-form__form {
+    width: 452px;
+  }
+  .search-form__button {
+    width: 160px;
+  }
+
+  .search-form__input {
+    width: 100%;
+  }
+
+  .search-form__button {
+    width: 160px;
+  }
+}
+
+@media screen and (max-width: 544px) {
+  .search-form__title,
+  .search-form__text,
+  .search-form__form,
+  .search-form__input {
+    width: 100%;
+  }
+
+  .search-form {
+    padding-bottom: 0px;
+  }
+
+  .search-form__title {
+    font-size: 32px;
+    width: 285px;
+  }
+  .search-form__text {
+    font-size: 20px;
+    width: 288px;
+    margin-bottom: 98px;
+  }
+
+  .search-form__form {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .search-form__input {
+    width: 288px;
+    height: 56px;
+    border: 1px;
+    border-radius: 100px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .search-form__button {
+    position: static;
+    width: 288px;
+  }
+}

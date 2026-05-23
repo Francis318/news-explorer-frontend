@@ -13,6 +13,9 @@ import InfoTooltip from "./components/InfoTooltip/InfoTooltip";
 import SavedNewsHeader from "./components/SavedNewsHeader/SavedNewsHeader";
 import SavedNews from "./components/SavedNews/SavedNews";
 import newsApi from "./utils/NewsApi";
+import mainApi from "./utils/MainApi";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import { CurrentUserContext } from "./contexts/CurrentUserContext";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -23,32 +26,11 @@ function App() {
   const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({ name: "Elise" });
+  const [currentUser, setCurrentUser] = React.useState({ name: "" });
   const [isSavedNews, setIsSavedNews] = React.useState(false);
   const [apiError, setApiError] = React.useState(false);
 
-  const [savedNews, setSavedNews] = React.useState([
-    {
-      _id: "1",
-      keyword: "Naturaleza",
-      title: "Descubren nueva especie marina",
-      description:
-        "Biólogos encuentran un pez bioluminiscente en las profundidades del océano.",
-      date: "11 de mayo de 2026",
-      source: "National Sci",
-      url: "https://images.unsplash.com/photo-1582967788606-a171c1080cb0?q=80&w=400&auto=format&fit=crop",
-    },
-    {
-      _id: "2",
-      keyword: "Yellowstone",
-      title: "El renacimiento de la exploración espacial",
-      description:
-        "Nuevos cohetes prometen viajes más baratos a la órbita terrestre.",
-      date: "13 de mayo de 2026",
-      source: "Agencia Espacial",
-      url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400&auto=format&fit=crop",
-    },
-  ]);
+  const [savedNews, setSavedNews] = React.useState([]);
 
   React.useEffect(() => {
     const storedCards = localStorage.getItem("latestNews");
@@ -57,6 +39,35 @@ function App() {
       setCards(JSON.parse(storedCards));
     }
   }, []);
+
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      mainApi
+        .getUserInfo(jwt)
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+            setCurrentUser(res.data || res);
+          }
+        })
+        .catch((err) => console.log("Token inválido o expirado:", err));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (isLoggedIn && jwt) {
+      mainApi
+        .getSavedArticles(jwt)
+        .then((articles) => {
+          setSavedNews(articles.reverse());
+        })
+        .catch((err) =>
+          console.log("Error al cargar artículos guardados:", err),
+        );
+    }
+  }, [isLoggedIn]);
 
   function handleSearch(keyword) {
     setIsLoading(true);
@@ -118,72 +129,143 @@ function App() {
     }
   }
 
-  function handleLoginSubmit() {
-    setIsLoggedIn(true);
-    setIsLoginPopupOpen(false);
+  function handleLoginSubmit({ email, password }) {
+    mainApi
+      .login(email, password)
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem("jwt", res.token);
+          setIsLoggedIn(true);
+          setIsLoginPopupOpen(false);
+          mainApi
+            .getUserInfo(res.token)
+            .then((userData) => {
+              setCurrentUser(userData.data || userData);
+            })
+            .catch((err) => console.log(err));
+        }
+      })
+      .catch((err) => {
+        console.log("Error al iniciar sesión:", err);
+      });
+  }
+
+  function handleRegisterSubmit({ email, password, name }) {
+    mainApi
+      .register(email, password, name)
+      .then(() => {
+        setIsRegisterPopupOpen(false);
+        setIsInfoTooltipOpen(true);
+      })
+      .catch((err) => {
+        console.log("Error al registrarse:", err);
+      });
+  }
+
+  function handleLogOut() {
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    setCurrentUser({ name: "" });
+  }
+
+  function handleSaveArticle(article) {
+    const jwt = localStorage.getItem("jwt");
+    mainApi
+      .saveArticle(article, jwt)
+      .then((savedArticle) => {
+        setSavedNews([savedArticle, ...savedNews]);
+      })
+      .catch((err) => console.log("Error al guardar el artículo:", err));
+  }
+
+  function handleDeleteArticle(articleId) {
+    const jwt = localStorage.getItem("jwt");
+    mainApi
+      .deleteArticle(articleId, jwt)
+      .then(() => {
+        setSavedNews((state) => state.filter((c) => c._id !== articleId));
+      })
+      .catch((err) => console.log("Error al borrar el artículo:", err));
   }
 
   return (
-    <div>
-      <Header
-        onLoginClick={handleLoginClick}
-        onRegisterClick={handleRegisterClick}
-        isLoggedIn={isLoggedIn}
-        currentUser={currentUser}
-      />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Main onSearch={handleSearch} />
-              {isLoading && <Preloader />}
-              {isNotFound && <NotFound />}
-              {apiError && (
-                <p
-                  style={{
-                    textAlign: "center",
-                    color: "#1a1b22",
-                    marginTop: "20px",
-                    fontFamily: "Roboto, sans-serif",
-                  }}
-                >
-                  Lo sentimos, algo ha salido mal durante la solicitud. Es
-                  posible que haya un problema de conexión o que el servidor no
-                  funcione. Por favor, inténtalo más tarde.
-                </p>
-              )}
-              {cards.length > 0 && <NewsCardList cards={cards} />}
-              <About />
-            </>
-          }
+    <CurrentUserContext.Provider value={currentUser}>
+      <div>
+        <Header
+          onLoginClick={handleLoginClick}
+          onRegisterClick={handleRegisterClick}
+          isLoggedIn={isLoggedIn}
+          currentUser={currentUser}
+          onLogOut={handleLogOut}
         />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Main onSearch={handleSearch} />
+                {isLoading && <Preloader />}
+                {isNotFound && <NotFound />}
+                {apiError && (
+                  <p
+                    style={{
+                      textAlign: "center",
+                      color: "#1a1b22",
+                      marginTop: "20px",
+                      fontFamily: "Roboto, sans-serif",
+                    }}
+                  >
+                    Lo sentimos, algo ha salido mal durante la solicitud. Es
+                    posible que haya un problema de conexión o que el servidor
+                    no funcione. Por favor, inténtalo más tarde.
+                  </p>
+                )}
+                {cards.length > 0 && (
+                  <NewsCardList
+                    cards={cards}
+                    onSaveArticle={handleSaveArticle}
+                    onDeleteArticle={handleDeleteArticle}
+                    isLoggedIn={isLoggedIn}
+                  />
+                )}
+                <About />
+              </>
+            }
+          />
 
-        <Route
-          path="/saved-news"
-          element={
-            <SavedNews currentUser={currentUser} savedArticles={savedNews} />
-          }
+          <Route
+            path="/saved-news"
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <SavedNews
+                  currentUser={currentUser}
+                  savedArticles={savedNews}
+                  onDeleteArticle={handleDeleteArticle}
+                />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        <Footer />
+        <Login
+          isOpen={isLoginPopupOpen}
+          onClose={() => setIsLoginPopupOpen(false)}
+          onRedirectClick={handleRegisterClick}
+          onLogin={handleLoginSubmit}
         />
-      </Routes>
-      <Footer />
-      <Login
-        isOpen={isLoginPopupOpen}
-        onClose={() => setIsLoginPopupOpen(false)}
-        onRedirectClick={handleRegisterClick}
-        onLogin={handleLoginSubmit}
-      />
-      <Register
-        isOpen={isRegisterPopupOpen}
-        onClose={() => setIsRegisterPopupOpen(false)}
-        onRedirectClick={handleLoginClick}
-      />
-      <InfoTooltip
-        isOpen={isInfoTooltipOpen}
-        onClose={() => setIsInfoTooltipOpen(false)}
-        onLoginClick={handleLoginClick}
-      />
-    </div>
+        <Register
+          isOpen={isRegisterPopupOpen}
+          onClose={() => setIsRegisterPopupOpen(false)}
+          onRedirectClick={handleLoginClick}
+          onRegister={handleRegisterSubmit}
+        />
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          onClose={() => setIsInfoTooltipOpen(false)}
+          onLoginClick={handleLoginClick}
+        />
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 
